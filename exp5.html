@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPREC Faculty Directory - Filterable List</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* H2 Styles */
+        h2 {
+            text-align: center;
+            color: red; 
+            margin-bottom: 25px;
+            font-size: 2em;
+        }
+
+        /* Filter Container Styles */
+        .filter-container {
+            margin-bottom: 25px;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .filter-container label {
+            font-weight: bold;
+            color: #333;
+        }
+        .filter-container select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+            margin-left: 10px;
+            min-width: 120px;
+        }
+
+        /* Table Styles */
+        table {
+            width: 90%; 
+            max-width: 1000px;
+            border-collapse: collapse; 
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        thead tr {
+            background-color: #f2f2f2; 
+        }
+        th, td {
+            text-align: left; 
+            padding: 12px;
+            border: 1px solid #ddd;
+            vertical-align: middle;
+        }
+
+        /* Image/Placeholder Styles */
+        .photo-container {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #ccc; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden; 
+            margin: 0 auto;
+            border: 1px solid #ddd;
+        }
+        
+        .photo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; 
+            display: block;
+        }
+        
+        /* Fallback Text Style (Initial/Initials) */
+        .fallback-text {
+            font-size: 0.7em;
+            color: #555;
+            text-align: center;
+            line-height: 1.1;
+            padding: 5px;
+            display: flex; /* Initially hidden, shown by JS on error */
+        }
+    </style>
+    
+    <script>
+        // Faculty Data (Simulating faculty.ts)
+        const facultyData = [
+            { photo: 'assets/kasiviswanath.png', name: 'Dr. N. Kasiviswanath', dept: 'CSE', email: 'hod.cse@gprec.ac.in', gender: 'Male' },
+            { photo: 'assets/prasunna.png', name: 'Smt. D.L.N.Prasunna', dept: 'CSE', email: 'prasunna.cse@gprec.ac.in', gender: 'Female' },
+            { photo: 'non-existent-tc.png', name: 'Smt. T. chandana', dept: 'ECS', email: 'chandana.ecs@gprec.ac.in', gender: 'Female' }, // Broken link for testing fallback
+            { photo: 'assets/praveensam.png', name: 'Dr. R. Praveen Sam', dept: 'ECS', email: 'hod.ecs@gprec.ac.in', gender: 'Male' },
+            { photo: 'assets/srilakshmi.png', name: 'Smt. Srilakshmi', dept: 'CSE', email: 'srilakshmi.cse@gprec.ac.in', gender: 'Female' },
+        ];
+
+        // Function to handle image error (fallback to initials)
+        function getInitials(fullName) {
+            return fullName.split(' ').map(n => n[0]).join('');
+        }
+
+        function handleImageError(imgElement) {
+            imgElement.style.display = 'none'; // Hide the broken image
+            const container = imgElement.closest('.photo-container');
+            if (container) {
+                container.style.backgroundColor = '#f0f0f0';
+                container.querySelector('.fallback-text').style.display = 'flex'; // Show the fallback text
+            }
+        }
+        
+        // Function to filter and render the table
+        function renderFacultyList() {
+            const selectedDept = document.getElementById('dept-filter').value;
+            const selectedGender = document.getElementById('gender-filter').value;
+            const tableBody = document.getElementById('faculty-table-body');
+
+            // 1. Filter the data based on selections
+            const filteredFaculty = facultyData.filter(f => {
+                const deptMatch = selectedDept === "" || f.dept === selectedDept;
+                const genderMatch = selectedGender === "" || f.gender === selectedGender;
+                return deptMatch && genderMatch;
+            });
+            
+            // 2. Clear current table content
+            tableBody.innerHTML = '';
+
+            // 3. Render the filtered data (Simulating *ngFor)
+            filteredFaculty.forEach(f => {
+                const initials = getInitials(f.name);
+                const row = document.createElement('tr');
+                
+                row.innerHTML = `
+                    <td>
+                        <div class="photo-container">
+                            <img 
+                                src="${f.photo}" 
+                                alt="${f.name}" 
+                                onerror="handleImageError(this)" 
+                            />
+                            <span class="fallback-text" style="display: none;">${initials}</span>
+                        </div>
+                    </td>
+                    <td>${f.name}</td>
+                    <td>${f.dept}</td>
+                    <td>${f.email}</td>
+                    <td>${f.gender}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // Initial render on page load
+        document.addEventListener('DOMContentLoaded', renderFacultyList);
+    </script>
+</head>
+<body>
+
+    <h2>GPREC FACULTY DIRECTORY</h2>
+
+    <div class="filter-container">
+        <label>
+            Department:
+            <select id="dept-filter" onchange="renderFacultyList()">
+                <option value="">All</option>
+                <option value="CSE">CSE</option>
+                <option value="ECS">ECS</option>
+            </select>
+        </label>
+
+        <label style="margin-left: 20px;">
+            Gender:
+            <select id="gender-filter" onchange="renderFacultyList()">
+                <option value="">All</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select>
+        </label>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Photo</th>
+                <th>Name</th>
+                <th>Department</th>
+                <th>Email</th>
+                <th>Gender</th>
+            </tr>
+        </thead>
+        <tbody id="faculty-table-body">
+            </tbody>
+    </table>
+
+</body>
+</html>

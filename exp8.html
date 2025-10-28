@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Data from Server Replication - EXP-8 (10 Users)</title>
+    <style>
+        /* CSS from app.css */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4ff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h2 {
+            text-align: center;
+            color: #2c3e50; /* Dark blue/gray */
+            font-family: 'Arial', sans-serif;
+            margin-bottom: 25px;
+            font-size: 2em;
+        }
+
+        /* Table styling */
+        table {
+            margin: 0 auto;
+            border-collapse: collapse;
+            width: 80%;
+            max-width: 900px;
+            font-family: 'Verdana', sans-serif;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            background-color: white;
+        }
+
+        /* Table header */
+        th {
+            border: 1px solid #2980b9; /* Darker blue */
+            padding: 12px;
+            background-color: #3498db; /* Bright blue */
+            color: white;
+            text-align: center;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        /* Table rows */
+        td {
+            border: 1px solid #2980b9;
+            padding: 12px;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+
+        /* Zebra striping */
+        tbody tr:nth-child(even) {
+            background-color: #ecf0f1; /* Light gray */
+        }
+        
+        /* Hover effect */
+        tbody tr:hover {
+            background-color: #c7d2de; /* Slightly darker hover */
+        }
+    </style>
+    
+    <script>
+        // Full data simulating the 10 users typically returned by the mock API (e.g., JSONPlaceholder)
+        const userData = [
+            { id: 1, name: 'Leanne Graham', email: 'Sincere@april.biz', address: { street: 'Kulas Light' } },
+            { id: 2, name: 'Ervin Howell', email: 'Shanna@melissa.tv', address: { street: 'Victor Plains' } },
+            { id: 3, name: 'Clementine Bauch', email: 'Nathan@yesenia.net', address: { street: 'Douglas Extension' } },
+            { id: 4, name: 'Patricia Lebsack', email: 'Julianne.OConner@kory.org', address: { street: 'Hoeger Mall' } },
+            { id: 5, name: 'Chelsey Dietrich', email: 'Lucio_Hettinger@annie.ca', address: { street: 'Skiles Walks' } },
+            { id: 6, name: 'Mrs. Dennis Schulist', email: 'Karley_Dach@jasper.info', address: { street: 'Norberto Crossing' } },
+            { id: 7, name: 'Kurtis Weissnat', email: 'Telly.Hoeger@billy.biz', address: { street: 'Rex Trail' } },
+            { id: 8, name: 'Nicholas Runolfsdottir', email: 'Sherwood@rosamond.me', address: { street: 'Ellsworth Summit' } },
+            { id: 9, name: 'Glenna Reichert', email: 'Chaim_McDermott@dana.io', address: { street: 'Dayna Park' } },
+            { id: 10, name: 'Clementina DuBuque', email: 'Rey.Padberg@karina.biz', address: { street: 'Kattie Turnpike' } }
+        ];
+
+        // Function to render the table (Simulating *ngFor)
+        function renderUserTable() {
+            const tableBody = document.getElementById('user-table-body');
+            
+            tableBody.innerHTML = ''; 
+
+            // Loop through the 10 users and create table rows
+            userData.forEach(user => {
+                const row = document.createElement('tr');
+                
+                // Dynamically inject user data
+                row.innerHTML = `
+                    <td>${user.name}</td>
+                    <td>${user.id}</td>
+                    <td>${user.email}</td>
+                    <td>${user.address.street}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // Run the rendering function when the page loads
+        document.addEventListener('DOMContentLoaded', renderUserTable);
+    </script>
+</head>
+<body>
+
+    <h2>User Data Fetching Example</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>ID</th>
+                <th>Email</th>
+                <th>Street</th>
+            </tr>
+        </thead>
+        <tbody id="user-table-body">
+            </tbody>
+    </table>
+
+</body>
+</html>

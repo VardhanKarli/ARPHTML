@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angular Material Sidenav Replication</title>
+    <style>
+        /* Global Styles */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100vh; 
+            overflow: hidden; 
+            font-family: Roboto, Arial, sans-serif;
+            background-color: #eee;
+        }
+
+        /* Sidenav Container */
+        .tp-container {
+            position: absolute; 
+            top: 0; 
+            bottom: 0; 
+            left: 0; 
+            right: 0; 
+            display: flex; 
+        }
+
+        /* Side Panel (Navigation Bar) */
+        .side-panel {
+            flex-shrink: 0; 
+            width: 200px; 
+            background-color: white; 
+            box-sizing: border-box;
+            box-shadow: 2px 0 2px -2px rgba(0,0,0,0.2); 
+            z-index: 10;
+            padding-top: 8px; 
+        }
+        
+        /* Main Content Panel */
+        .main-content {
+            flex-grow: 1;
+            padding: 20px;
+            background-color: white; 
+            margin-left: 2px; 
+            border-left: 1px solid #ccc;
+        }
+
+        /* Section Styling (Navigation Item) */
+        .tp-section {
+            display: flex; 
+            align-items: center; 
+            height: 48px; 
+            width: 100%; 
+            box-sizing: border-box;
+            padding: 0 16px;
+            font-size: 14px;
+            color: #333;
+            cursor: pointer;
+            transition: background-color 0.1s ease-in-out;
+        }
+        
+        .tp-section:hover {
+            background-color: #f0f0f0; 
+        }
+        
+        /* Active State Highlight */
+        .tp-section.active {
+            background-color: #e0e0e0;
+            font-weight: bold;
+            color: #007bff;
+        }
+        
+        .main-content h3 {
+            color: #333;
+            border-bottom: 1px dashed #ccc;
+            padding-bottom: 10px;
+        }
+    </style>
+    
+    <script>
+        // Data structure to hold content for each section
+        const sectionContent = {
+            'File': { title: 'File Operations', text: 'This section handles creating, opening, and saving files. Verify the result of file operations.' },
+            'Edit': { title: 'Editing Tools', text: 'This section contains cut, copy, and paste functionalities. Verify the result of editing actions.' },
+            'View': { title: 'View Options', text: 'This section manages the application\'s visual layout. Verify the result of view changes.' },
+            'Help': { title: 'Application Help', text: 'This section provides documentation and support. Verify the result of documentation access.' }
+        };
+
+        function selectSection(sectionName) {
+            // 1. Update Active State in Side Panel
+            const sections = document.querySelectorAll('.tp-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+                if (section.textContent.trim() === sectionName) {
+                    section.classList.add('active');
+                }
+            });
+
+            // 2. Update Main Content
+            const content = sectionContent[sectionName];
+            document.getElementById('main-content-title').textContent = content.title;
+            document.getElementById('main-content-text').innerHTML = content.text.replace(/Verify the result\./, '<p>Verify the result.</p>');
+        }
+        
+        // Load default section on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            selectSection('File'); 
+        });
+    </script>
+</head>
+<body>
+
+    <div class="tp-container">
+        
+        <div class="side-panel">
+            
+            <section class="tp-section" onclick="selectSection('File')">File</section> 
+            <section class="tp-section" onclick="selectSection('Edit')">Edit</section> 
+            <section class="tp-section" onclick="selectSection('View')">View</section> 
+            <section class="tp-section" onclick="selectSection('Help')">Help</section> 
+        </div>
+
+        <div class="main-content">
+            <h3 id="main-content-title">Main content</h3> 
+            <div id="main-content-text">
+                <p>Result</p>
+                <p>Verify the result.</p>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

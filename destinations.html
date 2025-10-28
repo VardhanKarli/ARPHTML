@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Portal - Destinations</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            text-align: center;
+            /* Placeholder for /assets/dest.png background */
+            background-color: #fff;
+            background-image: url('placeholder-dest-bg.png'); 
+            background-size: cover;
+            background-position: center;
+            padding-top: 20px;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            color: #d32f2f; 
+            font-size: 2.5rem;
+            margin-top: 40px;
+        }
+
+        .button-list { 
+            display: flex;
+            justify-content: center; 
+            gap: 15px;
+            margin-bottom: 30px; 
+            flex-wrap: wrap;
+        }
+        
+        .button-list button { 
+            padding: 10px 20px; 
+            border: none;
+            background-color: #4d62b6; 
+            color: white;
+            border-radius: 8px; 
+            cursor: pointer; 
+            transition: 0.3s; 
+            font-size: 1rem;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .button-list button.active, 
+        .button-list button:hover { 
+            background-color: #00796b; 
+        }
+        
+        .image-container { 
+            text-align: center; 
+            margin: 20px auto;
+            max-width: 400px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: none; /* Hidden by default, shown by JS */
+        }
+        
+        .image-container img { 
+            width: 100%; 
+            height: auto;
+            border-radius: 10px; 
+            margin-bottom: 15px;
+        }
+        
+        .image-container ul { 
+            list-style: none; 
+            padding: 0;
+        }
+        
+        .image-container li { 
+            background-color: #e0f2f1; 
+            margin: 8px 0;
+            padding: 10px; 
+            border-radius: 5px;
+            font-size: 1.1rem;
+        }
+
+        .back-link {
+            display: block;
+            margin-top: 30px;
+            font-size: 1.1rem;
+            color: #007bff;
+            text-decoration: none;
+        }
+    </style>
+    <script>
+        const destinationsData = {
+            'Paris': { attractions: ['Eiffel Tower', 'Louvre Museum', 'Notre-Dame Cathedral'], image: 'Paris' },
+            'Tokyo': { attractions: ['Tokyo Tower', 'Shinjuku Gyoen', 'Asakusa Temple'], image: 'Tokyo' },
+            'NewYork': { attractions: ['Statue of Liberty', 'Central Park', 'Times Square'], image: 'NewYork' },
+            'Dubai': { attractions: ['Burj Khalifa', 'Palm Jumeirah', 'Dubai Mall'], image: 'Dubai' }
+        };
+
+        function selectDestination(destination) {
+            const data = destinationsData[destination];
+            const container = document.getElementById('destination-image-container');
+            const ul = container.querySelector('ul');
+            const buttons = document.querySelectorAll('.button-list button');
+
+            // Set active button state
+            buttons.forEach(btn => btn.classList.remove('active'));
+            document.getElementById('btn-' + destination).classList.add('active');
+
+            // Set image placeholder and alt text
+            const img = container.querySelector('img');
+            img.src = 'placeholder-' + data.image.toLowerCase() + '.png'; // Using placeholder naming
+            img.alt = destination + ' image placeholder';
+
+            // Populate list of attractions
+            ul.innerHTML = '';
+            data.attractions.forEach(place => {
+                const li = document.createElement('li');
+                li.textContent = place;
+                ul.appendChild(li);
+            });
+
+            // Show the container
+            container.style.display = 'block';
+        }
+    </script>
+</head>
+<body>
+
+    <h2>Top Travel Destinations</h2>
+    
+    <div class="button-list">
+        <button id="btn-Paris" onclick="selectDestination('Paris')"> ✈️ Paris</button>
+        <button id="btn-Tokyo" onclick="selectDestination('Tokyo')"> 🏯 Tokyo</button>
+        <button id="btn-NewYork" onclick="selectDestination('NewYork')"> 🗽 New York</button>
+        <button id="btn-Dubai" onclick="selectDestination('Dubai')"> 🐪 Dubai</button>
+    </div>
+    
+    <div class="image-container" id="destination-image-container">
+        <img src="" alt="" style="background-color: #eee; height: 200px; display: block; border: 1px dashed #ccc;">
+        <ul>
+            </ul>
+    </div>
+
+    <a href="home.html" class="back-link">← Go Back to Home</a>
+
+</body>
+</html>

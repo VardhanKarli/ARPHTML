@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Shopping Cart - EXP-6 Services</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        /* App Container (Simulating app.html structure) */
+        .app-container {
+            display: flex;
+            justify-content: space-around;
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Shared Component Container Styles */
+        .component-container {
+            flex: 1;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        /* ------------------------------------------- */
+        /* Product Component Styles (from product.css) */
+        /* ------------------------------------------- */
+        .product-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .product-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px dashed #ddd;
+        }
+
+        .product-info {
+            font-size: 1.1em;
+            color: #555;
+        }
+
+        .product-list button {
+            background-color: #28a745; /* Green */
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .product-list button:hover {
+            background-color: #1e7e34;
+        }
+
+        /* ------------------------------------------- */
+        /* Cart Component Styles (from cart.css)       */
+        /* ------------------------------------------- */
+        .cart-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .cart-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px dotted #ccc;
+        }
+        
+        .cart-list button {
+            background-color: #dc3545; /* Red */
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .cart-list button:hover {
+            background-color: #c82333;
+        }
+
+        h3 {
+            border-top: 2px solid #eee;
+            padding-top: 10px;
+            margin-top: 20px;
+            text-align: right;
+            color: #007bff;
+        }
+        
+        .empty-message {
+            text-align: center;
+            color: #999;
+            padding: 20px;
+            font-style: italic;
+        }
+    </style>
+
+    <script>
+        // --- 1. Cart Data Service Simulation (Simulating CartData1Service) ---
+        let cartItems = [];
+        let total = 0;
+
+        const productData = [
+            { id: 1, name: 'Laptop', price: 50000 },
+            { id: 2, name: 'Mobile', price: 15000 },
+            { id: 3, name: 'Headphones', price: 2500 }
+        ];
+
+        function calculateTotal() {
+            total = cartItems.reduce((sum, item) => sum + item.price, 0);
+        }
+
+        function getCartItems() {
+            return cartItems;
+        }
+
+        function getTotal() {
+            return total;
+        }
+
+        function addItem(product) {
+            cartItems.push(product);
+            calculateTotal();
+            // Re-render both components after change (simulating Angular change detection)
+            renderCartComponent(); 
+        }
+
+        function removeItem(index) {
+            cartItems.splice(index, 1);
+            calculateTotal();
+            // Re-render both components after change
+            renderCartComponent();
+        }
+
+        // --- 2. Component Rendering Functions (Simulating Angular Templates) ---
+
+        // Renders the Cart Component (Simulating cart.html and cart.ts)
+        function renderCartComponent() {
+            const cartList = document.getElementById('cart-list');
+            const totalDisplay = document.getElementById('cart-total');
+            const emptyMessage = document.getElementById('cart-empty-message');
+            
+            cartList.innerHTML = '';
+
+            const items = getCartItems();
+            
+            if (items.length > 0) {
+                // Populate list (*ngFor)
+                items.forEach((item, index) => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        ${item.name} - ₹${item.price}
+                        <button onclick="removeItem(${index})">Remove</button>
+                    `;
+                    cartList.appendChild(li);
+                });
+                
+                // Show total (*ngIf)
+                totalDisplay.innerHTML = `<h3>Total: ₹${getTotal()}</h3>`;
+                totalDisplay.style.display = 'block';
+                emptyMessage.style.display = 'none';
+            } else {
+                // Show empty message (*ngIf)
+                totalDisplay.style.display = 'none';
+                emptyMessage.style.display = 'block';
+            }
+        }
+
+        // Renders the Product Component's list (Simulating product.html)
+        function renderProductComponent() {
+            const productList = document.getElementById('product-list');
+            
+            productData.forEach(product => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <span class="product-info">${product.name} - ₹${product.price}</span>
+                    <button onclick='addItem({name: "${product.name}", price: ${product.price}})'
+                        >Add to Cart</button>
+                `;
+                productList.appendChild(li);
+            });
+            // Initial cart render
+            renderCartComponent();
+        }
+        
+        // Run on page load
+        document.addEventListener('DOMContentLoaded', renderProductComponent);
+    </script>
+</head>
+<body>
+
+    <div class="app-container">
+
+        <div class="component-container">
+            <h2>Product List</h2>
+            
+            <ul class="product-list" id="product-list">
+                </ul>
+        </div>
+        
+        <div class="component-container">
+            <h2>Your Cart</h2>
+            
+            <ul class="cart-list" id="cart-list">
+                </ul>
+            
+            <div id="cart-total" style="display: none;"></div>
+            <p id="cart-empty-message" class="empty-message" style="display: none;">Cart is empty</p>
+        </div>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Portal - Bookings</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* Placeholder for /assets/book.png background */
+            background-color: #f0fff1;
+            background-image: url('placeholder-book-bg.png');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .booking-container { 
+            text-align: center; 
+            background-color: white; 
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            max-width: 500px;
+            width: 90%;
+        }
+
+        h2 {
+            color: #d32f2f; 
+            margin-bottom: 25px;
+        }
+        
+        form {
+            display: flex;
+            flex-direction: column; 
+            align-items: center;
+            gap: 15px;
+        }
+
+        .form-row { 
+            display: flex;
+            align-items: center; 
+            width: 100%;
+            justify-content: space-between;
+        }
+        
+        .form-row label {
+            width: 150px;
+            text-align: right; 
+            font-weight: bold;
+        }
+        
+        .form-row input, 
+        .form-row select { 
+            padding: 10px; 
+            font-size: 1rem;
+            border: 1px solid #ccc; 
+            border-radius: 6px; 
+            flex-grow: 1; /* Allows input/select to fill space */
+            max-width: 250px;
+        }
+        
+        button[type="submit"] {
+            padding: 10px 30px; 
+            font-size: 1.1rem; 
+            background-color: teal; 
+            color: white;
+            border: none; 
+            border-radius: 8px; 
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+        
+        button[type="submit"]:hover { background-color: darkcyan; }
+
+        .confirmation { 
+            margin-top: 25px;
+            background-color: #e0f7fa; 
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            text-align: left;
+            border: 1px solid #b2ebf2;
+        }
+        
+        .back-link {
+            display: block;
+            margin-top: 15px;
+            font-size: 1rem;
+            color: #007bff;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        /* Responsive adjustments */
+        @media(max-width: 600px){
+            .form-row{
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .form-row label{
+                width: 100%;
+                text-align: left;
+                margin-bottom: 5px;
+            }
+            .form-row input, .form-row select{ 
+                max-width: 100%;
+            }
+        }
+    </style>
+    <script>
+        function submitBooking(event) {
+            event.preventDefault(); 
+            
+            const form = event.target;
+            const name = form.name.value;
+            const persons = form.persons.value;
+            const destination = form.destination.value;
+            const confirmationDiv = document.getElementById('confirmation-message');
+            
+            if (form.checkValidity()) {
+                // Populate confirmation message
+                confirmationDiv.querySelector('#conf-name').textContent = name;
+                confirmationDiv.querySelector('#conf-dest').textContent = destination;
+                confirmationDiv.querySelector('#conf-persons').textContent = persons;
+
+                // Show confirmation message and hide form
+                confirmationDiv.style.display = 'block';
+                form.style.display = 'none'; 
+            } else {
+                form.reportValidity();
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <div class="booking-container">
+        <h2>Book Your Trip</h2>
+        
+        <form onsubmit="submitBooking(event)">
+            <div class="form-row">
+                <label for="name">Name:</label>
+                <input id="name" name="name" type="text" required/>
+            </div>
+            <div class="form-row">
+                <label for="persons">No. of Persons:</label>
+                <input id="persons" name="persons" type="number" min="1" required />
+            </div>
+            <div class="form-row">
+                <label for="destination">Choose Destination:</label>
+                <select id="destination" name="destination" required>
+                    <option value="" disabled selected>Select...</option>
+                    <option value="Paris">Paris</option>
+                    <option value="Tokyo">Tokyo</option>
+                    <option value="NewYork">New York</option>
+                    <option value="Dubai">Dubai</option>
+                </select>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+        
+        <div id="confirmation-message" class="confirmation" style="display: none;">
+            <p>Thank you, <strong id="conf-name"></strong>!</p>
+            <p>Your trip to <strong><span id="conf-dest"></span></strong> has been booked for 
+            <strong><span id="conf-persons"></span></strong> person(s).</p>
+            
+            <a href="home.html" class="back-link">Return to Home</a>
+        </div>
+        
+        <a href="home.html" class="back-link" id="form-back-link">← Go Back to Home</a>
+    </div>
+    
+    <script>
+        // Adjust back link visibility based on form state
+        document.getElementById('bookingForm').addEventListener('submit', function() {
+            document.getElementById('form-back-link').style.display = 'none';
+        });
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            if (document.getElementById('confirmation-message').style.display !== 'none') {
+                 document.getElementById('form-back-link').style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

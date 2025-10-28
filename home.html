@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Portal - Home</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            /* Placeholder for /assets/tour1.png background */
+            background-color: #f0f0f0;
+            background-image: url('placeholder-home-bg.png'); 
+            background-size: cover;
+            background-position: center;
+        }
+
+        .home-container {
+            padding: 40px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            color: #d32f2f; /* Red */
+            margin-bottom: 30px;
+        }
+
+        .button-group a {
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+            transition: background-color 0.3s ease;
+            display: inline-block;
+        }
+
+        /* Destination button color */
+        .button-group a:nth-child(1) { background-color: #28a745; } 
+        .button-group a:nth-child(1):hover { background-color: #218838; }
+        
+        /* Booking button color */
+        .button-group a:nth-child(2) { background-color: #17a2b8; } 
+        .button-group a:nth-child(2):hover { background-color: #117a8b; }
+    </style>
+</head>
+<body>
+
+    <div class="home-container">
+        <h2> ✈️ Pack Your Bags - Let's Explore! </h2>
+        
+        <div class="button-group">
+            <a href="destinations.html">Destination</a>
+            
+            <a href="bookings.html">Booking</a>
+        </div>
+    </div>
+
+</body>
+</html>
